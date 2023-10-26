@@ -1,0 +1,9 @@
+.sort-div {
+    background-color: black;
+    display: flex;
+    padding: 5px;
+}
+.sort-bar {
+    background-color: white;
+    width: 1vw;
+}
