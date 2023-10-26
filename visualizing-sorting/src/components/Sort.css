@@ -7,3 +7,7 @@
     background-color: white;
     width: 1vw;
 }
+.active-sort-bar {
+    background-color: red;
+    width: 1vw;
+}
