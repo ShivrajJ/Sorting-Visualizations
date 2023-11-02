@@ -7,6 +7,10 @@ function swap(arr:Array<number>, a:number, b:number):void {
   arr[b] = temp;
 }
 const timer = (ms:number) => new Promise(res => setTimeout(res, ms))
+const reset = {value:false};
+function resetArr() : void {
+  reset.value = true;
+}
 
 async function bubbleSort(arr : Array<number>, setArr: React.Dispatch<React.SetStateAction<number[]>>, setActive: React.Dispatch<React.SetStateAction<number>>, iteration:number, setIteration: React.Dispatch<React.SetStateAction<number>>): Promise<Array<number>> {
   var flag:boolean = true;
@@ -14,6 +18,9 @@ async function bubbleSort(arr : Array<number>, setArr: React.Dispatch<React.SetS
     flag = false;
     for (let i : number = 0; i < arr.length - 1; i++) {
       setIteration(iteration++);
+      if(reset.value) {
+        break;
+      }
       if(arr[i] < arr[i+1]) {
         swap(arr, i, i+1);
         setActive(i);
@@ -24,6 +31,11 @@ async function bubbleSort(arr : Array<number>, setArr: React.Dispatch<React.SetS
     }
   }
   setActive(-1);
+  if(reset.value) {
+    setArr(Array.from({length:100}, () => Math.floor(Math.random()*100)));
+    setIteration(0);
+    reset.value = false;
+  }
   return arr;
 }
 
@@ -32,6 +44,9 @@ async function selectionSort(arr : Array<number>, setArr: React.Dispatch<React.S
     var biggest:number = i;
     for(let j = i+1; j < arr.length; j++) {
       setIteration(iteration++);
+      if(reset.value) {
+        break;
+      }
       if(arr[j] > arr[biggest]) {
         biggest = j;
         await timer(20);
@@ -43,12 +58,20 @@ async function selectionSort(arr : Array<number>, setArr: React.Dispatch<React.S
     setArr([...arr]);
   }
   setActive(-1);
+  if(reset.value) {
+    setArr(Array.from({length:100}, () => Math.floor(Math.random()*100)));
+    setIteration(0);
+    reset.value = false;
+  }
   return arr;
 }
 async function insertionSort(arr:Array<number>, setArr: React.Dispatch<React.SetStateAction<number[]>>, setActive: React.Dispatch<React.SetStateAction<number>>, iteration:number, setIteration: React.Dispatch<React.SetStateAction<number>>): Promise<Array<number>> {
   for(let i:number = 1; i < arr.length; i++) {
     var temp:number = i;
     while(temp>0 && arr[temp] > arr[temp-1]) {
+      if(reset.value) {
+        break;
+      }
       setIteration(iteration++);
       swap(arr, temp, temp-1);
       setActive(temp)
@@ -58,6 +81,11 @@ async function insertionSort(arr:Array<number>, setArr: React.Dispatch<React.Set
     }
   }
   setActive(-1);
+  if(reset.value) {
+    setArr(Array.from({length:100}, () => Math.floor(Math.random()*100)));
+    setIteration(0);
+    reset.value = false;
+  }
   return arr;
 }
 async function mergeSort(arr : Array<number>, setArr: React.Dispatch<React.SetStateAction<number[]>>, setActive: React.Dispatch<React.SetStateAction<number>>, iteration:number, setIteration: React.Dispatch<React.SetStateAction<number>>): Promise<Array<number>> {
@@ -72,6 +100,9 @@ async function mergeSort(arr : Array<number>, setArr: React.Dispatch<React.SetSt
     let j:number = 0;
     let k:number = l;
     while(i<n1 && j<n2) {
+      if(reset.value) {
+        break;
+      }
       if(lArr[i] >= rArr[j]) {
         arr[k] = lArr[i];
         setIteration(iteration++);
@@ -88,6 +119,9 @@ async function mergeSort(arr : Array<number>, setArr: React.Dispatch<React.SetSt
       k++;
     }
     while(i<n1) {
+      if(reset.value) {
+        break;
+      }
       arr[k] = lArr[i];
       setIteration(iteration++);
       await timer(20);
@@ -96,6 +130,9 @@ async function mergeSort(arr : Array<number>, setArr: React.Dispatch<React.SetSt
       k++;
     }
     while(j<n2) {
+      if(reset.value) {
+        break;
+      }
       arr[k] = rArr[j];
       setIteration(iteration++);
       await timer(20);
@@ -105,6 +142,9 @@ async function mergeSort(arr : Array<number>, setArr: React.Dispatch<React.SetSt
     }
   }
   async function mSort(arr:Array<number>, l:number, r:number): Promise<void> {
+    if(reset.value) {
+      return;
+    }
     if(l>=r) {
       return;
     }
@@ -116,6 +156,11 @@ async function mergeSort(arr : Array<number>, setArr: React.Dispatch<React.SetSt
   }
   await mSort(arr, 0, arr.length-1);
   setActive(-1);
+  if(reset.value) {
+    setArr(Array.from({length:100}, () => Math.floor(Math.random()*100)));
+    setIteration(0);
+    reset.value = false;
+  }
   return arr;
 }
 async function quickSort(arr : Array<number>, setArr: React.Dispatch<React.SetStateAction<number[]>>, setActive: React.Dispatch<React.SetStateAction<number>>, iteration:number, setIteration: React.Dispatch<React.SetStateAction<number>>): Promise<Array<number>> {
@@ -124,6 +169,9 @@ async function quickSort(arr : Array<number>, setArr: React.Dispatch<React.SetSt
     setActive(low);
     var j:number = high;
     for(var i = high; i > low; i--) {
+      if(reset.value) {
+        break;
+      }
       if(arr[i] < pivot) {
         swap(arr, i, j);
         setIteration(iteration++);
@@ -140,6 +188,9 @@ async function quickSort(arr : Array<number>, setArr: React.Dispatch<React.SetSt
     return j;
   }
   async function qSort(arr:Array<number>, low:number, high:number): Promise<void> {
+    if(reset.value) {
+      return;
+    }
     if(low < high) {
       var p:number = await partition(arr, low, high);
       await qSort(arr, low, p-1);
@@ -148,6 +199,11 @@ async function quickSort(arr : Array<number>, setArr: React.Dispatch<React.SetSt
   }
   await qSort(arr, 0, arr.length-1);
   setActive(-1);
+  if(reset.value) {
+    setArr(Array.from({length:100}, () => Math.floor(Math.random()*100)));
+    setIteration(0);
+    reset.value = false;
+  }
   return arr;
 }
 
@@ -155,11 +211,11 @@ function App() {
 
   return (
     <>
-      <Sort sortName={"Bubble Sort"} sortFunc={bubbleSort} />
-      <Sort sortName={"Selection Sort"} sortFunc={selectionSort} />
-      <Sort sortName={"Insertion Sort"} sortFunc={insertionSort} />
-      <Sort sortName={"Merge Sort"} sortFunc={mergeSort} />
-      <Sort sortName={"Quick Sort"} sortFunc={quickSort} />
+      <Sort sortName={"Bubble Sort"} resetArr={resetArr} sortFunc={bubbleSort} />
+      <Sort sortName={"Selection Sort"} resetArr={resetArr} sortFunc={selectionSort} />
+      <Sort sortName={"Insertion Sort"} resetArr={resetArr} sortFunc={insertionSort} />
+      <Sort sortName={"Merge Sort"} resetArr={resetArr} sortFunc={mergeSort} />
+      <Sort sortName={"Quick Sort"} resetArr={resetArr} sortFunc={quickSort} />
     </>
   )
 }
