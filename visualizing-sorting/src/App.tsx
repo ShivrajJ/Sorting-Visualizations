@@ -8,11 +8,12 @@ function swap(arr:Array<number>, a:number, b:number):void {
 }
 const timer = (ms:number) => new Promise(res => setTimeout(res, ms))
 
-async function bubbleSort(arr : Array<number>, setArr: React.Dispatch<React.SetStateAction<number[]>>, setActive: React.Dispatch<React.SetStateAction<number>>): Promise<Array<number>> {
+async function bubbleSort(arr : Array<number>, setArr: React.Dispatch<React.SetStateAction<number[]>>, setActive: React.Dispatch<React.SetStateAction<number>>, iteration:number, setIteration: React.Dispatch<React.SetStateAction<number>>): Promise<Array<number>> {
   var flag:boolean = true;
   while(flag) {
     flag = false;
     for (let i : number = 0; i < arr.length - 1; i++) {
+      setIteration(iteration++);
       if(arr[i] < arr[i+1]) {
         swap(arr, i, i+1);
         setActive(i);
@@ -26,10 +27,11 @@ async function bubbleSort(arr : Array<number>, setArr: React.Dispatch<React.SetS
   return arr;
 }
 
-async function selectionSort(arr : Array<number>, setArr: React.Dispatch<React.SetStateAction<number[]>>, setActive: React.Dispatch<React.SetStateAction<number>>): Promise<Array<number>> {
+async function selectionSort(arr : Array<number>, setArr: React.Dispatch<React.SetStateAction<number[]>>, setActive: React.Dispatch<React.SetStateAction<number>>, iteration:number, setIteration: React.Dispatch<React.SetStateAction<number>>): Promise<Array<number>> {
   for(let i : number = 0; i<arr.length-1; i++) {
     var biggest:number = i;
     for(let j = i+1; j < arr.length; j++) {
+      setIteration(iteration++);
       if(arr[j] > arr[biggest]) {
         biggest = j;
         await timer(20);
@@ -43,10 +45,11 @@ async function selectionSort(arr : Array<number>, setArr: React.Dispatch<React.S
   setActive(-1);
   return arr;
 }
-async function insertionSort(arr:Array<number>, setArr: React.Dispatch<React.SetStateAction<number[]>>, setActive: React.Dispatch<React.SetStateAction<number>>): Promise<Array<number>> {
+async function insertionSort(arr:Array<number>, setArr: React.Dispatch<React.SetStateAction<number[]>>, setActive: React.Dispatch<React.SetStateAction<number>>, iteration:number, setIteration: React.Dispatch<React.SetStateAction<number>>): Promise<Array<number>> {
   for(let i:number = 1; i < arr.length; i++) {
     var temp:number = i;
     while(temp>0 && arr[temp] > arr[temp-1]) {
+      setIteration(iteration++);
       swap(arr, temp, temp-1);
       setActive(temp)
       temp--;
@@ -57,7 +60,7 @@ async function insertionSort(arr:Array<number>, setArr: React.Dispatch<React.Set
   setActive(-1);
   return arr;
 }
-async function mergeSort(arr : Array<number>, setArr: React.Dispatch<React.SetStateAction<number[]>>, setActive: React.Dispatch<React.SetStateAction<number>>): Promise<Array<number>> {
+async function mergeSort(arr : Array<number>, setArr: React.Dispatch<React.SetStateAction<number[]>>, setActive: React.Dispatch<React.SetStateAction<number>>, iteration:number, setIteration: React.Dispatch<React.SetStateAction<number>>): Promise<Array<number>> {
   async function merge(arr:Array<number>, l:number, mid:number, r:number): Promise<void> {
     var n1:number = mid-l+1;
     var n2:number = r-mid;
@@ -71,11 +74,13 @@ async function mergeSort(arr : Array<number>, setArr: React.Dispatch<React.SetSt
     while(i<n1 && j<n2) {
       if(lArr[i] >= rArr[j]) {
         arr[k] = lArr[i];
+        setIteration(iteration++);
         await timer(20);
         setArr([...arr]);
         i++;
       } else {
         arr[k] = rArr[j];
+        setIteration(iteration++);
         await timer(20);
         setArr([...arr]);
         j++;
@@ -84,6 +89,7 @@ async function mergeSort(arr : Array<number>, setArr: React.Dispatch<React.SetSt
     }
     while(i<n1) {
       arr[k] = lArr[i];
+      setIteration(iteration++);
       await timer(20);
       setArr([...arr]);
       i++;
@@ -91,6 +97,7 @@ async function mergeSort(arr : Array<number>, setArr: React.Dispatch<React.SetSt
     }
     while(j<n2) {
       arr[k] = rArr[j];
+      setIteration(iteration++);
       await timer(20);
       setArr([...arr]);
       j++;
@@ -111,7 +118,7 @@ async function mergeSort(arr : Array<number>, setArr: React.Dispatch<React.SetSt
   setActive(-1);
   return arr;
 }
-async function quickSort(arr : Array<number>, setArr: React.Dispatch<React.SetStateAction<number[]>>, setActive: React.Dispatch<React.SetStateAction<number>>): Promise<Array<number>> {
+async function quickSort(arr : Array<number>, setArr: React.Dispatch<React.SetStateAction<number[]>>, setActive: React.Dispatch<React.SetStateAction<number>>, iteration:number, setIteration: React.Dispatch<React.SetStateAction<number>>): Promise<Array<number>> {
   async function partition(arr:Array<number>, low:number, high:number): Promise<number> {
     var pivot = arr[low];
     setActive(low);
@@ -119,6 +126,7 @@ async function quickSort(arr : Array<number>, setArr: React.Dispatch<React.SetSt
     for(var i = high; i > low; i--) {
       if(arr[i] < pivot) {
         swap(arr, i, j);
+        setIteration(iteration++);
         await timer(20);
         setArr([...arr]);
         j--;
@@ -126,6 +134,7 @@ async function quickSort(arr : Array<number>, setArr: React.Dispatch<React.SetSt
     }
     swap(arr, low, j);
     setActive(j);
+    setIteration(iteration++);
     await timer(20);
     setArr([...arr]);
     return j;
